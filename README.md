@@ -6,6 +6,18 @@ A real-time personalized news feed app. Users log in with JWT auth, select inter
 
 > **Live link:** _<!-- paste deployed URL here e.g. https://your-app.vercel.app -->_
 
+## 📸 Screenshots
+
+> Drop your app's screenshots into the [`screenshots/`](screenshots/) folder using the filenames below, and they will render here automatically.
+
+| Screen | Preview |
+|---|---|
+| Login | <img src="screenshots/login.png" width="320" alt="Login page"> |
+| Register | <img src="screenshots/register.png" width="320" alt="Register page"> |
+| Onboarding | <img src="screenshots/onboarding.png" width="320" alt="Personalization/onboarding"> |
+| News feed | <img src="screenshots/news.png" width="320" alt="News feed"> |
+| News detail | <img src="screenshots/news-detail.png" width="320" alt="News detail page"> |
+
 ## ✨ Features
 
 - **JWT auth (register/login** with `bcrypt` hashed passwords
