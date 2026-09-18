@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Environment variables (contains API keys / JWT secret — NEVER commit)
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
