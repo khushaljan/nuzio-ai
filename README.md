@@ -1,6 +1,6 @@
 # Personalized News App (MERN)
 
-A real-time personalized news feed app. Users log in with JWT auth, select interests during onboarding, and the app fetches live articles from the **GNews API** filtered by profession + interests.
+A real-time personalized news feed app. Users log in with JWT auth, select interests during onboarding,and the app fetches live articles from the **GNews API** filtered by profession + interests.
 
 ## 🚀 Live demo
 
@@ -56,14 +56,39 @@ npm run dev        # -> http://localhost:5173
 
 A helper seed script exists: `backend/create-test-user.js` (creates `admin@example.com` / `admin123` with interests).
 
-## 🌐 Deployment
+## 🌐 Deployment (Vercel + Render + MongoDB Atlas)
 
-- **Frontend (Vercel)**: build via Vite; set `VITE_API_URL` = your deployed backend URL (required — otherwise it falls back to `localhost`).
-- **Backend**: host the Express API separately (e.g. Render
-  - Set env vars: `MONGO_URI` (MongoDB Atlas), `JWT_SECRET`, `NEWS_API_KEY`, `PORT`
-  - Add `backend` as the root when deploying the server folder.
+**Recommended stack:** Frontend on Vercel, backend on Render, database on MongoDB Atlas. Therepo is pre-configured (`render.yaml` blueprint for the backend,,`frontend/vercel.json` for SPA routing.).
 
-## 🔑 Test login (local)
+### 1. MongoDB Atlas(create the database
+1. Go to [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas) and create a free cluster.
+2. Under **Database Deploy → Connect**, choose **Drivers**, copy the full MongoDB connection string. Add your DB user/password into the string (replace `<password>`.. It looks like:
+   `mongodb+srv://<user>:<password>@cluster0.xxxxx.mongodb.net/nuzio_ai`
+
+### 2. Backend on Render
+1. Push this repo to GitHub..
+2. On Render: **New → Blueprint**, select the repo. Render reads `render.yaml` automatically (root = `backend`, build `npm install`, start `npm start`.).
+3. For each env var below, click the lock icon to fill it in:
+   - `MONGO_URI` → your Atlas connection string(step 1)
+   - `JWT_SECRET` → a long random string
+   - `NEWS_API_KEY` → your GNews key from [gnews.io](https://gnews.io)
+   - Render auto-sets `PORT` — do not set it..
+
+4. Click **Create Resources** and wait for the deploy. When the service flips to **Live**, copy its URL (e.g. `https://nuzio-ai-backend.onrender.com`).
+
+> ⚠️ To create the backend manually instead: **New Web Service**, Root Directory = `backend`, Build = `npm install`, Start = `npm start`, then set the same env vars..
+
+### 3. Frontend on Vercel
+1. In Vercel: **Add New → Project**, import the same GitHub repo..
+2.** **Root Directory** → select `frontend`.
+3.** Under **Environment Variables**, add:
+   - `VITE_API_URL` → `https://<your-render-backend-host>/api` (the Render URL from step 2 with `/api` appended,no trailing slash).
+4.** Click **Deploy**. Vercel reads `frontend/vercel.json` (SPA rewrites], builds via Vite,and serves the app..
+5.** Save the deployed URL((e.g. `https://nuzio-ai.vercel.app`)asthe **live link** (see top of this README)...
+
+> ⚠️ `VITE_API_URL` **must** point at your deployed backend — otherwise the app falls back to `localhost` and won't work in production. If you change it, redeploy the frontend.**
+
+## 🔑 Test login (local
 
 ```
 email    : admin@example.com

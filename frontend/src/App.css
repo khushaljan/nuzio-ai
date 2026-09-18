@@ -424,3 +424,20 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 }
+/* Auth switch links */
+.switch-link {
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+.switch-link a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.switch-link a:hover {
+  text-decoration: underline;
+}

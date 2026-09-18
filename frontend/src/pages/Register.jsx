@@ -2,24 +2,33 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Login() {
+function Register() {
   const navigate = useNavigate();
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
     setLoading(true);
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/auth/login`,
+        `${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/auth/register`,
         {
+          name,
           email,
           password,
         }
@@ -36,12 +45,12 @@ function Login() {
         );
       }
 
-      // Go to news page
-      navigate("/news");
+      // New user → set up profession and interests first
+      navigate("/onboarding");
     } catch (error) {
       setError(
         error.response?.data?.message ||
-          "Invalid email or password"
+          "Registration failed. Please try again"
       );
     } finally {
       setLoading(false);
@@ -51,10 +60,22 @@ function Login() {
   return (
     <div className="login-page">
       <div className="login-card">
-        <h1>Welcome Back</h1>
-        <p>Login to continue</p>
+        <h1>Create Account</h1>
+        <p>Sign up to get started</p>
 
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleRegister}>
+          <div>
+            <label>Name</label>
+
+            <input
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+
           <div>
             <label>Email</label>
 
@@ -79,6 +100,18 @@ function Login() {
             />
           </div>
 
+          <div>
+            <label>Confirm Password</label>
+
+            <input
+              type="password"
+              placeholder="Confirm your password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </div>
+
           {error && (
             <p className="error-message">
               {error}
@@ -86,17 +119,17 @@ function Login() {
           )}
 
           <button type="submit" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Creating account..." : "Sign Up"}
           </button>
         </form>
 
         <p className="switch-link">
-          Don't have an account?{" "}
-          <Link to="/register">Sign Up</Link>
+          Already have an account?{" "}
+          <Link to="/login">Login</Link>
         </p>
       </div>
     </div>
   );
 }
 
-export default Login;
+export default Register;

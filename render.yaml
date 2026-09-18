@@ -1,0 +1,21 @@
+# Render Blueprint — deploys the Express backend.
+# Add `backend` as the "Root Directory" is automatic via `rootDir` here.
+# Create a new "Blueprint" from this file (or a new Web Service using:
+#   rootDir: backend, build: npm install, start: npm start).
+services:
+  - type: web
+    name: nuzio-ai-backend
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      # Render automatically assigns PORT (do NOT override it).
+      - key: MONGO_URI
+        sync: false              # Paste your MongoDB Atlas connection string (starts mongoDB+srv://...
+      - key: JWT_SECRET
+        sync: false              # Any long random secret string
+      - key: NEWS_API_KEY
+        sync: false              # Your GNews API key from https://gnews.io
